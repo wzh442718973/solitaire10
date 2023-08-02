@@ -35,12 +35,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.appszoom.appszoomsdk.AppsZoom;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.AdListener;
-//import com.google.android.gms.ads.BannerAdListener;
 
 // Base activity class.
 public class Solitaire extends Activity {
@@ -65,21 +59,17 @@ public class Solitaire extends Activity {
   
   // Shared preferences are where the various user settings are stored.
   public SharedPreferences GetSettings() { return mSettings; }
-  private AdView adView;
-  private AdRequest adRequest;
-  
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mDoSave = true;
-    AppsZoom.start(this);
-    
-    // Force landscape and no title for extra room
-    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-    InitAdmob();  
-         
+    // Force landscape and no title for extra room
+//    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//    requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+
     // If the user has never accepted the EULA show it again.
     mSettings = getSharedPreferences("SolitairePreferences", 0);
     
@@ -89,25 +79,6 @@ public class Solitaire extends Activity {
     mSolitaireView = (SolitaireView) findViewById(R.id.solitaire);
     mSolitaireView.SetTextView((TextView) findViewById(R.id.text));
 
-    View layout =findViewById(R.id.rel_layout); 
-  
-    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-    FrameLayout.LayoutParams.MATCH_PARENT,                                         
-    FrameLayout.LayoutParams.WRAP_CONTENT);
-    params.gravity = Gravity.BOTTOM;
-    params.gravity = Gravity.LEFT;
-    adView.setLayoutParams(params);
-    
-    FrameLayout fl = (FrameLayout) findViewById(R.id.adView);
-    if (fl != null) {
-       fl.removeAllViews();
-       fl.addView(adView, params);
-    }
-    
-    setContentView(layout);
-    adView.loadAd(adRequest);
-   
-    //StartSolitaire(savedInstanceState);
   }
 
 //  private boolean doubleBackToExitPressedOnce = false;
@@ -142,36 +113,6 @@ public class Solitaire extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
-
-
-private void InitAdmob() {
-	adView = new AdView(this);
-    adView.setAdSize(AdSize.BANNER);
-    adView.setAdUnitId("a15341caf10045c");
-    adRequest = new AdRequest.Builder().build();   
-
-    // Set the AdListener.
-    adView.setAdListener(new AdListener() {
-     
-      /** Called when an ad failed to load. */
-      @Override
-      public void onAdFailedToLoad(int error) {
-        String message = "onAdFailedToLoad: " + error;
-        Log.d("Admob", message);
-      }
-
-      @Override
-      public void onAdOpened() {
-        Log.d("Admob", "onAdOpened");
-      }
-
-      /** Called when an ad is loaded. */
-      @Override
-      public void onAdLoaded() {
-        Log.d("Admob", "onAdLoaded");
-      }
-    });
-}
 
   // Entry point for starting the game.
   //public void StartSolitaire(Bundle savedInstanceState) {
@@ -267,7 +208,6 @@ private void InitAdmob() {
   protected void onPause() {
     super.onPause();
     mSolitaireView.onPause();
-    if (adView != null) adView.pause();
   }
 
   @Override
@@ -282,8 +222,6 @@ private void InitAdmob() {
   protected void onResume() {
     super.onResume();
     mSolitaireView.onResume();
-    if (adView != null) adView.resume();
-    //this.doubleBackToExitPressedOnce = false;
    }
 
   @Override
@@ -324,9 +262,6 @@ private void InitAdmob() {
   @Override
   public void onDestroy() {
     // Destroy the AdView.
-    if (adView != null) {
-      adView.destroy();
-    }
     super.onDestroy();
   }
 

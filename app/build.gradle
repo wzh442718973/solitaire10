@@ -1,23 +1,29 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 10
-    buildToolsVersion '19.0.3'
+    compileSdkVersion 31
+    buildToolsVersion '30.0.0'
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 10
+        applicationId "com.produce.frame"
+        minSdkVersion 21
+        targetSdkVersion 31
+        versionCode 1207
+        versionName "1.0.7"
     }
 
     buildTypes {
         release {
-            runProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    compile 'com.google.android.gms:play-services:+'
-    compile files('libs/appszoomsdk.jar')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.google.gms:google-services:4.3.15'
+    implementation 'com.google.android.gms:play-services-base:18.2.0'
+//    implementation 'com.google.android.gms:play-services:+'
+//    implementation files('libs/appszoomsdk.jar.bak')
 }
