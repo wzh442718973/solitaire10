@@ -223,15 +223,15 @@ class CardAnchor {
   private boolean IsOver(float x, float y, boolean deck, int close) {
     float clx = mCardCount == 0 ? mX : mCard[mCardCount - 1].GetX();
     float leftX = mLeftEdge == -1 ? clx : mLeftEdge;
-    float rightX = mRightEdge == -1 ? clx + Card.WIDTH : mRightEdge;
+    float rightX = mRightEdge == -1 ? clx + App.CARD_WIDTH : mRightEdge;
     float topY = (mCardCount == 0 || deck) ? mY : mCard[mCardCount-1].GetY();
     float botY = mCardCount > 0 ? mCard[mCardCount - 1].GetY() : mY;
-    botY += Card.HEIGHT;
+    botY += App.CARD_HEIGH;
 
-    leftX -= close*Card.WIDTH/2;
-    rightX += close*Card.WIDTH/2;
-    topY -= close*Card.HEIGHT/2;
-    botY += close*Card.HEIGHT/2;
+    leftX -= close*App.CARD_WIDTH/2;
+    rightX += close*App.CARD_WIDTH/2;
+    topY -= close*App.CARD_HEIGH/2;
+    botY += close*App.CARD_HEIGH/2;
     if (mBottom != -1 && botY + 10 >= mBottom)
       botY = mBottom;
 
@@ -285,7 +285,7 @@ class DealTo extends CardAnchor {
       } else {
         int offset = mCardCount - mShowing;
         offset = offset < 0 ? 0 : offset;
-        mCard[idx].SetPosition(mX + (idx - offset) * Card.WIDTH/2, mY);
+        mCard[idx].SetPosition(mX + (idx - offset) * App.CARD_WIDTH/2, mY);
       }
     }
   }
@@ -336,7 +336,7 @@ class SeqStack extends CardAnchor {
     super();
     mSpacing = GetMaxSpacing();
     mHideHidden = false;
-    mMaxHeight = Card.HEIGHT;
+    mMaxHeight = App.CARD_HEIGH;
   }
 
   @Override
@@ -346,9 +346,9 @@ class SeqStack extends CardAnchor {
     SetPosition(mX, mY);
   }
 
-  // This can't be a constant as Card.HEIGHT isn't constant.
+  // This can't be a constant as App.CARD_HEIGH isn't constant.
   protected int GetMaxSpacing() {
-    return Card.HEIGHT/3;
+    return App.CARD_HEIGH/3;
   }
 
   @Override
@@ -425,12 +425,12 @@ class SeqStack extends CardAnchor {
     int max = mMaxHeight;
     int hidden = mHiddenCount;
     int showing = mCardCount - hidden;
-    int spaceLeft = max - (hidden * HIDDEN_SPACING) - Card.HEIGHT;
+    int spaceLeft = max - (hidden * HIDDEN_SPACING) - App.CARD_HEIGH;
     int spacing = spaceLeft / (showing - 1);
 
     if (spacing < SMALL_SPACING && hidden > 1) {
       mHideHidden = true;
-      spaceLeft = max - HIDDEN_SPACING - Card.HEIGHT;
+      spaceLeft = max - HIDDEN_SPACING - App.CARD_HEIGH;
       spacing = spaceLeft / (showing - 1);
     } else {
       mHideHidden = false;
@@ -489,8 +489,8 @@ class SeqSink extends CardAnchor {
   @Override
   public boolean CanDropCard(MoveCard moveCard, int close) {
     Card card = moveCard.GetTopCard();
-    float x = card.GetX() + Card.WIDTH/2;
-    float y = card.GetY() + Card.HEIGHT/2;
+    float x = card.GetX() + App.CARD_WIDTH/2;
+    float y = card.GetY() + App.CARD_HEIGH/2;
     Card topCard = mCardCount > 0 ? mCard[mCardCount - 1] : null;
     float my = mCardCount > 0 ? topCard.GetY() : mY;
 
@@ -527,8 +527,8 @@ class SuitSeqStack extends SeqStack {
   public boolean CanDropCard(MoveCard moveCard, int close) {
 
     Card card = moveCard.GetTopCard();
-    float x = card.GetX() + Card.WIDTH/2;
-    float y = card.GetY() + Card.HEIGHT/2;
+    float x = card.GetX() + App.CARD_WIDTH/2;
+    float y = card.GetY() + App.CARD_HEIGH/2;
     Card topCard = mCardCount > 0 ? mCard[mCardCount - 1] : null;
     float my = mCardCount > 0 ? topCard.GetY() : mY;
 
@@ -574,8 +574,8 @@ class SpiderStack extends SeqStack {
   public boolean CanDropCard(MoveCard moveCard, int close) {
 
     Card card = moveCard.GetTopCard();
-    float x = card.GetX() + Card.WIDTH/2;
-    float y = card.GetY() + Card.HEIGHT/2;
+    float x = card.GetX() + App.CARD_WIDTH/2;
+    float y = card.GetY() + App.CARD_HEIGH/2;
     Card topCard = mCardCount > 0 ? mCard[mCardCount - 1] : null;
     float my = mCardCount > 0 ? topCard.GetY() : mY;
 
@@ -637,7 +637,7 @@ class SpiderStack extends SeqStack {
     if (super.ExpandStack(x, y)) {
       float maxY = mCard[mCardCount-GetMovableCount()].GetY();
 
-      if (y >= maxY - Card.HEIGHT/2) {
+      if (y >= maxY - App.CARD_HEIGH/2) {
         return true;
       }
     }
@@ -653,8 +653,8 @@ class FreecellStack extends SeqStack {
   public boolean CanDropCard(MoveCard moveCard, int close) {
 
     Card card = moveCard.GetTopCard();
-    float x = card.GetX() + Card.WIDTH/2;
-    float y = card.GetY() + Card.HEIGHT/2;
+    float x = card.GetX() + App.CARD_WIDTH/2;
+    float y = card.GetY() + App.CARD_HEIGH/2;
     Card topCard = mCardCount > 0 ? mCard[mCardCount - 1] : null;
     float my = mCardCount > 0 ? topCard.GetY() : mY;
 
@@ -720,7 +720,7 @@ class FreecellStack extends SeqStack {
   public boolean CanMoveStack(float x, float y) {
     if (super.ExpandStack(x, y)) {
       float maxY = mCard[mCardCount-GetMovableCount()].GetY();
-      if (y >= maxY - Card.HEIGHT/2) {
+      if (y >= maxY - App.CARD_HEIGH/2) {
         return true;
       }
     }
@@ -735,7 +735,7 @@ class FreecellHold extends CardAnchor {
   public boolean CanDropCard(MoveCard moveCard, int close) {
     Card card = moveCard.GetTopCard();
     if (mCardCount == 0 && moveCard.GetCount() == 1 &&
-        IsOverCard(card.GetX() + Card.WIDTH/2, card.GetY() + Card.HEIGHT/2, close)) {
+        IsOverCard(card.GetX() + App.CARD_WIDTH/2, card.GetY() + App.CARD_HEIGH/2, close)) {
       return true;
     }
     return false;
@@ -780,7 +780,6 @@ class GenericAnchor extends CardAnchor {
   public static final int DEALHACK=1;
     
   protected static final int SMALL_SPACING = 7;
-  protected static final int HIDDEN_SPACING = 3;
 
   protected int mSpacing;
   protected boolean mHideHidden;
@@ -797,7 +796,7 @@ class GenericAnchor extends CardAnchor {
     SetDisplay(GenericAnchor.DISPLAY_ALL);    
     mSpacing = GetMaxSpacing();
     mHideHidden = false;
-    mMaxHeight = Card.HEIGHT;
+    mMaxHeight = App.CARD_HEIGH;
   }
 
   @Override
@@ -813,10 +812,10 @@ class GenericAnchor extends CardAnchor {
       if (mHideHidden) {
         mCard[idx].SetPosition(mX, mY);
       } else {
-        mCard[idx].SetPosition(mX, mY + HIDDEN_SPACING * idx);
+        mCard[idx].SetPosition(mX, mY + App.HIDDEN_SPACING * idx);
       }
     } else {
-      int startY = mHideHidden ? HIDDEN_SPACING : mHiddenCount * HIDDEN_SPACING;
+      int startY = mHideHidden ? App.HIDDEN_SPACING : mHiddenCount * App.HIDDEN_SPACING;
       int y = (int)mY + startY + (idx - mHiddenCount) * mSpacing;
       mCard[idx].SetPosition(mX, y);
     }
@@ -852,8 +851,8 @@ class GenericAnchor extends CardAnchor {
     }
     
     Card card = moveCard.GetTopCard();
-    float x = card.GetX() + Card.WIDTH/2;
-    float y = card.GetY() + Card.HEIGHT/2;
+    float x = card.GetX() + App.CARD_WIDTH/2;
+    float y = card.GetY() + App.CARD_HEIGH/2;
     //Card topCard = mCardCount > 0 ? mCard[mCardCount - 1] : null;
     //float my = mCardCount > 0 ? topCard.GetY() : mY;
     if (IsOverCard(x, y, close)) {
@@ -1109,12 +1108,12 @@ class GenericAnchor extends CardAnchor {
     int max = mMaxHeight;
     int hidden = mHiddenCount;
     int showing = mCardCount - hidden;
-    int spaceLeft = max - (hidden * HIDDEN_SPACING) - Card.HEIGHT;
+    int spaceLeft = max - (hidden * App.HIDDEN_SPACING) - App.CARD_HEIGH;
     int spacing = spaceLeft / (showing - 1);
 
     if (spacing < SMALL_SPACING && hidden > 1) {
       mHideHidden = true;
-      spaceLeft = max - HIDDEN_SPACING - Card.HEIGHT;
+      spaceLeft = max - App.HIDDEN_SPACING - App.CARD_HEIGH;
       spacing = spaceLeft / (showing - 1);
     } else {
       mHideHidden = false;
@@ -1127,9 +1126,9 @@ class GenericAnchor extends CardAnchor {
       SetPosition(mX, mY);
     }
   }
-  // This can't be a constant as Card.HEIGHT isn't constant.
+  // This can't be a constant as App.CARD_HEIGH isn't constant.
   protected int GetMaxSpacing() {
-    return Card.HEIGHT/3;
+    return App.CARD_HEIGH/3;
   }
 
   public float GetNewY() {

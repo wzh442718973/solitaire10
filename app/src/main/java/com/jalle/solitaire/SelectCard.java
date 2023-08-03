@@ -82,13 +82,13 @@ class SelectCard {
     }
     float x = mCard[0].GetX(); 
     float y = mCard[mid].GetY();
-    if (y - mid * (Card.HEIGHT + 5) < 0) {
+    if (y - mid * (App.CARD_HEIGH + 5) < 0) {
       mid = 0;
       y = 5;
     }
 
     for (int i = 0; i < mCardCount; i++) {
-      mCard[i].SetPosition(x, y + (i - mid) * (Card.HEIGHT + 5));
+      mCard[i].SetPosition(x, y + (i - mid) * (App.CARD_HEIGH + 5));
     }
 
     mLeftEdge = cardAnchor.GetLeftEdge();
@@ -97,11 +97,11 @@ class SelectCard {
 
   public boolean Tap(float x, float y) {
     float left = mLeftEdge == -1 ? mCard[0].GetX() : mLeftEdge;
-    float right = mRightEdge == -1 ? mCard[0].GetX() + Card.WIDTH : mRightEdge;
+    float right = mRightEdge == -1 ? mCard[0].GetX() + App.CARD_WIDTH : mRightEdge;
     mSelected = -1;
     if (x >= left && x <= right) {
       for (int i = 0; i < mCardCount; i++) {
-        if (y >= mCard[i].GetY() && y <= mCard[i].GetY() + Card.HEIGHT) {
+        if (y >= mCard[i].GetY() && y <= mCard[i].GetY() + App.CARD_HEIGH) {
           mSelected = i;
           return true;
         }

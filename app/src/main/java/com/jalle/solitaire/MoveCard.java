@@ -110,7 +110,7 @@ class MoveCard {
     Card[] cards = selectCard.DumpCards();
 
     for (int i = 0; i < count; i++) {
-      cards[i].SetPosition(x - Card.WIDTH/2, y - Card.HEIGHT/2 + 15*i);
+      cards[i].SetPosition(x - App.CARD_WIDTH/2, y - App.CARD_HEIGH/2 + 15*i);
       AddCard(cards[i]);
     }
     mValid = true;

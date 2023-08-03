@@ -151,8 +151,9 @@ public class SolitaireView extends View {
     if (oldGameType == mRules.GetGameTypeString()) {
       mRules.SetCarryOverScore(oldScore);
     }
-    Card.SetSize(gameType);
-    mDrawMaster.DrawCards(GetSettings().getBoolean("DisplayBigCards", false));
+//    Card.SetSize(gameType);
+    App.setType(gameType);
+    mDrawMaster.DrawCards(false);//true
     mCardAnchor = mRules.GetAnchorArray();
     if (mDrawMaster.GetWidth() > 1) {
       mRules.Resize(mDrawMaster.GetWidth(), mDrawMaster.GetHeight());
@@ -387,7 +388,8 @@ public class SolitaireView extends View {
 
       mGameStarted = !mMoveHistory.isEmpty();
       mRules = Rules.CreateRules(type, map, this, mMoveHistory, mAnimateCard);
-      Card.SetSize(type);
+//      Card.SetSize(type);
+      App.setType(type);
       SetDisplayTime(GetSettings().getBoolean("DisplayTime", true));
       mCardAnchor = mRules.GetAnchorArray();
       if (mDrawMaster.GetWidth() > 1) {
@@ -662,13 +664,13 @@ public class SolitaireView extends View {
         for (int i = 0; i < mCardAnchor.length; i++) {
           card = mCardAnchor[i].GrabCard(x, y);
           if (card != null) {
-            if (y < card.GetY() + Card.HEIGHT/4) {
+            if (y < card.GetY() + App.CARD_HEIGH/4) {
               boolean lastIgnore = mRules.GetIgnoreEvents();
               mRules.SetIgnoreEvents(true);
               mCardAnchor[i].AddCard(card);
               mRules.SetIgnoreEvents(lastIgnore);
               if (mCardAnchor[i].ExpandStack(x, y)) {
-                mMoveCard.InitFromAnchor(mCardAnchor[i], x-Card.WIDTH/2, y-Card.HEIGHT/2);
+                mMoveCard.InitFromAnchor(mCardAnchor[i], x-App.CARD_WIDTH/2, y-App.CARD_HEIGH/2);
                 ChangeViewMode(MODE_MOVE_CARD);
                 break;
               }
@@ -695,7 +697,7 @@ public class SolitaireView extends View {
         if (Math.abs(mDownPoint.x - x) > 15 || Math.abs(mDownPoint.y - y) > 15) {
           for (int i = 0; i < mCardAnchor.length; i++) {
             if (mCardAnchor[i].CanMoveStack(mDownPoint.x, mDownPoint.y)) {
-              mMoveCard.InitFromAnchor(mCardAnchor[i], x-Card.WIDTH/2, y-Card.HEIGHT/2);
+              mMoveCard.InitFromAnchor(mCardAnchor[i], x-App.CARD_WIDTH/2, y-App.CARD_HEIGH/2);
               ChangeViewMode(MODE_MOVE_CARD);
               return true;
             }
